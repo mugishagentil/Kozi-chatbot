@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, X, Bot, User } from 'lucide-react';
+import BotMessage from './components/BotMessage';
 import { KoziAI } from './services/koziAI';
 
 const __app_id = typeof window !== "undefined" ? window.__app_id : "default-app-id";
@@ -78,16 +79,14 @@ export default function App() {
               key={index}
               className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`}
             >
-              <div
-                className={`flex items-center space-x-2 p-3 rounded-lg max-w-xs md:max-w-md ${msg.sender === 'user'
-                  ? 'bg-blue-500 text-white rounded-br-none'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-bl-none'
-                  }`}
-              >
-                {msg.sender === 'bot' && <Bot size={20} className="flex-shrink-0" />}
-                <p>{msg.text}</p>
-                {msg.sender === 'user' && <User size={20} className="flex-shrink-0" />}
-              </div>
+              {msg.sender === 'bot' ? (
+                <BotMessage message={msg.text} />
+              ) : (
+                <div className="flex items-center space-x-2 p-3 bg-blue-500 text-white rounded-lg rounded-br-none max-w-xs md:max-w-md ml-auto">
+                  <p>{msg.text}</p>
+                  <User size={20} className="flex-shrink-0" />
+                </div>
+              )}
             </div>
           ))}
           <div ref={messagesEndRef} />
